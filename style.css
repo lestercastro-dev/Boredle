@@ -4,7 +4,9 @@
 }
 
 * {
-    font-family: 'Nunito', sans-serif !important;
+    font-family: 'Sniglet', cursive !important;
+    font-weight: 400 !important; /* <--- ADD THIS LINE */
+    box-sizing: border-box;
 }
 
 /* 2. Fix the bottom white bar by coloring the root container */
