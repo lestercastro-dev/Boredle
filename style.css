@@ -2,10 +2,10 @@
 :root {
     /* --- LIGHT MODE (Blue Flower Theme) --- */
     /* Based on the soft blue/white sketch */
-    --bg-color: #b0c4de;            /* Very pale blue-white background */
+    --bg-color: #b0c4de;           /* Very pale blue-white background */
    
     
-    --grid-line: rgb(255, 255, 255);
+    --grid-line: rgba(60, 80, 110, 0.15);
     /* Tiles */
     --text-color: #5d6d8e;
     --tile-bg: #e1eaf5;
@@ -13,7 +13,7 @@
     --tile-text: #3b4d70;
     --key-bg: #d3deed;
     --key-text: #3b4d70;
-    --fog-color: rgba(255, 255, 255, 0.6); 
+    --fog-color: rgba(255, 255, 255, 0.3); 
     /* Modal / Popups */
     --modal-bg: #ffffff;
     --modal-border: #8fa6c9;    /* Flower petal blue */
@@ -32,6 +32,8 @@
 body.dark-mode {
     /* Based on the black/red/beige character */
     --bg-color: #1a1a1c;        /* Deep charcoal black */
+
+    --grid-line: rgba(255, 255, 255, 0.05);
     --text-color: #f2e6d8;      /* Cream/Beige (like the skin/hair) */
     
     /* Tiles */
@@ -42,6 +44,7 @@ body.dark-mode {
     /* Keyboard */
     --key-bg: #3e3e42;          /* Dark gray keys */
     --key-text: #f2e6d8;
+    --fog-color: rgba(0, 0, 0, 0.4); 
     
     /* Modal / Popups */
     --modal-bg: #1a1a1c;
@@ -54,38 +57,42 @@ body.dark-mode {
     --correct-color: #6aaa64;   /* Standard Green */
     --present-color: #c9b458;   /* Standard Yellow */
     --absent-color: #3e3e42;    /* Dark Gray */
-    --grid-line: rgba(255, 255, 255, 0.05); /* White, 5% opacity */
-    --fog-color: rgba(0, 0, 0, 0.7); 
+
+
 }
 
 /* 2. MAIN STYLES (Using the Variables) */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
 
 html, body {
+    /* RESET DEFAULT BROWSER STYLES */
+    margin: 0 !important;   /* Kill the white border */
+    padding: 0 !important;  /* Kill any extra padding */
+    width: 100vw;           /* Force full viewport width */
+    height: 100vh;          /* Force full viewport height */
+    
+    /* Center Content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Ensure vertical centering */
+    
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Nunito', sans-serif;
     
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    padding: 20px;
-    
     /* GRID PATTERN */
     background-image: 
-        linear-gradient(var(--grid-line) 2px, transparent 2px),
-        linear-gradient(90deg, var(--grid-line) 2px, transparent 2px);
+        linear-gradient(var(--grid-line) 2px, transparent 2px), 
+        linear-gradient(90deg, var(--grid-line) 2px, transparent 2px); 
     background-size: 80px 80px !important; 
     
     transition: background-color 0.3s, color 0.3s;
     background-attachment: fixed;
     
-    /* --- NEW: DISABLE SCROLLING --- */
-    width: 100%;
-    height: 100%;       /* Force it to fill the screen exactly */
-    overflow: hidden;   /* Cut off anything that sticks out (No scrollbars) */
-    overscroll-behavior: none; /* Stop the "rubber band" bounce on iPhone */
+    /* DISABLE SCROLLING */
+    overflow: hidden;
+    overscroll-behavior: none;
 }
 
 h1 {
@@ -389,31 +396,8 @@ body {
     color: var(--text-color);
 }
 
-/* --- THE FOG LAYER --- */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; 
-    left: 0; 
-    width: 200%; /* Wider than screen for movement */
-    height: 200%; /* Taller than screen */
-    
-    /* The Fog Texture: A diagonal drift of mist */
-    background-image: linear-gradient(
-        120deg, 
-        var(--fog-color) 0%, 
-        transparent 40%, 
-        transparent 60%, 
-        var(--fog-color) 100%
-    );
-    
-    /* Put it behind the buttons, but in front of the grid background */
-    z-index: 0; 
-    pointer-events: none; /* Let clicks pass through it */
-    
-    /* The Animation: Move it slowly */
-    animation: fogDrift 20s infinite linear;
-}
+/* --- THE FOG LAYER (Fixed) --- */
+
 
 @keyframes fogDrift {
     0% { transform: translate(0, 0); }
