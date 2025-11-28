@@ -326,3 +326,39 @@ rulesBtn.addEventListener("click", () => {
 closeRules.addEventListener("click", () => {
     rulesModal.classList.add("hidden");
 });
+
+// --- MISSING MODAL FUNCTIONS ---
+
+function showModal(win) {
+    modal.classList.remove("hidden");
+    modalWord.innerText = secretWord;
+    
+    if (win) {
+        modalTitle.innerText = "CONGRATULATIONS";
+        // Optional: Add confetti logic here later
+    } else {
+        modalTitle.innerText = "GAME OVER";
+    }
+}
+
+// Ensure the Main Menu button definitely works
+menuBtn.addEventListener("click", () => {
+    modal.classList.add("hidden");      // Close Modal
+    gameScreen.classList.add("hidden"); // Hide Board
+    homeScreen.classList.remove("hidden"); // Show Menu
+    
+    // Optional: Reset game so it's fresh when they come back
+    resetBoardVisuals();
+});
+
+// Helper to clean up the board (used by Menu and Play Again)
+function resetBoardVisuals() {
+    tiles.forEach(tile => {
+        tile.innerText = "";
+        tile.className = "tile"; 
+        tile.style.borderColor = ""; 
+    });
+    keyboardButtons.forEach(btn => {
+        btn.className = "keyboard-button"; // Remove colors
+    });
+}
