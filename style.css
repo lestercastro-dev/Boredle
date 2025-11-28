@@ -417,3 +417,41 @@ body::before {
     100% { transform: translate(0, 0); } /* Go back */
 }
 
+/* --- MOBILE RESPONSIVENESS (The Shrink Ray) --- */
+@media (max-width: 600px) {
+
+    /* 1. Shrink the Home Screen Logo */
+    .logo {
+        font-size: 60px; /* Smaller title so it fits */
+    }
+
+    /* 2. Shrink the Board Tiles */
+    /* From 64px -> 52px */
+    .tile {
+        width: 52px;
+        height: 52px;
+        font-size: 26px; /* Smaller letters */
+        border-radius: 8px; /* Slightly less round to save space */
+    }
+
+    /* 3. Shrink the Keyboard Keys */
+    /* From 52px -> 33px (We have to squeeze 10 keys in one row!) */
+    .keyboard-button {
+        min-width: 33px;
+        height: 55px;    /* Keep them tall/chunky */
+        font-size: 14px;
+        margin: 0 1px;
+    }
+
+    /* 4. Fix the Special Keys (Enter/Del) */
+    .third-row .keyboard-button:first-child, 
+    .third-row .keyboard-button:last-child { 
+        min-width: 50px !important; 
+        font-size: 11px;
+    }
+
+    /* 5. Tighter Gaps */
+    #board { gap: 5px; }
+    #keyboard-cont { gap: 5px; width: 100%; }
+    #keyboard-cont div { gap: 2px; } /* Very tight spacing for keys */
+}
