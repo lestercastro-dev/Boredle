@@ -1,3 +1,8 @@
+/* 1. Global Box Sizing Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 * {
     font-family: 'Nunito', sans-serif !important;
 }
@@ -492,4 +497,19 @@ body {
     #board { gap: 5px; }
     #keyboard-cont { gap: 5px; width: 100%; }
     #keyboard-cont div { gap: 2px; } /* Very tight spacing for keys */
+}
+
+/* SHAKE ANIMATION (For invalid words) */
+.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0% { transform: translateX(1px); }
+    10% { transform: translateX(-1px); }
+    20% { transform: translateX(2px); }
+    30% { transform: translateX(-2px); }
+    40% { transform: translateX(1px); }
+    50% { transform: translateX(-1px); }
+    60% { transform: translateX(0); }
 }
