@@ -61,10 +61,11 @@ body.dark-mode {
 /* 2. MAIN STYLES (Using the Variables) */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
 
-body {
+html, body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Nunito', sans-serif;
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -75,13 +76,16 @@ body {
     background-image: 
         linear-gradient(var(--grid-line) 2px, transparent 2px),
         linear-gradient(90deg, var(--grid-line) 2px, transparent 2px);
-    
-    /* FORCE BIG SQUARES */
-    background-size: 80px 80px !important;  
+    background-size: 80px 80px !important; 
     
     transition: background-color 0.3s, color 0.3s;
     background-attachment: fixed;
-    height: 100vh; /* Fill whole screen */
+    
+    /* --- NEW: DISABLE SCROLLING --- */
+    width: 100%;
+    height: 100%;       /* Force it to fill the screen exactly */
+    overflow: hidden;   /* Cut off anything that sticks out (No scrollbars) */
+    overscroll-behavior: none; /* Stop the "rubber band" bounce on iPhone */
 }
 
 h1 {
