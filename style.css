@@ -98,7 +98,7 @@ body.dark-mode {
     /* Status Colors */
     --correct-color: #6aaa64;   /* Standard Green */
     --present-color: #c9b458;   /* Standard Yellow */
-    --absent-color: #3e3e42;    /* Dark Gray */
+    --absent-color: #595964;    /* Dark Gray */
 
     /* NEW SPECIAL KEY COLOR: Matches the Red Glasses theme */
     --key-special-bg: #c94c4c; /* The Red Accent */
