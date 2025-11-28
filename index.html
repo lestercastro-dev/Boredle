@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#b0c4de">
     <title>My Wordle</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#b0c4de">
+
 </head>
     
 <body>
+    <div id="streak-counter" class="floating-counter">🔥 0</div>
     <!-- 1. THEME TOGGLE (Keep this visible always) -->
     <script>
         if (localStorage.getItem('theme') === 'dark') {

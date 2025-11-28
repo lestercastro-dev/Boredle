@@ -63,7 +63,15 @@ body.dark-mode {
 
 /* 2. MAIN STYLES (Using the Variables) */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+/* FORCE FONT ON BUTTONS */
+button {
+    font-family: 'Nunito', sans-serif !important;
+}
 
+/* FIX BOTTOM GAP COLORS */
+html {
+    background-color: var(--bg-color); /* Ensures full coverage */
+}
 html, body {
     /* RESET DEFAULT BROWSER STYLES */
     margin: 0 !important;   /* Kill the white border */
@@ -274,13 +282,46 @@ h1 {
 }
 .message.fade-out { opacity: 0; transition: opacity 0.5s ease; }
 
+/* STREAK COUNTER (Top Left) */
+.floating-counter {
+    position: fixed;
+    top: 20px;
+    left: 20px; /* Symmetric with the Right button */
+    
+    background-color: var(--key-bg);
+    color: var(--text-color);
+    
+    padding: 10px 20px;
+    height: 50px; /* Same height as theme button */
+    border-radius: 30px; /* Pill shape */
+    
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Nunito', sans-serif;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between Fire and Number */
+    
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 2000; /* Above the fog */
+    
+    /* Make sure it doesn't get selected like text */
+    user-select: none;
+    cursor: default;
+}
+
 /* FLOATING TOGGLE BUTTON */
 .floating-btn {
-    bottom: 20px;
+    /* MOVE TO TOP RIGHT */
+    position: fixed;
+    top: 20px;    /* Was bottom: 20px */
     right: 20px;
+    
     width: 50px;
     height: 50px;
-    border-radius: 50%; /* Circle */
+    border-radius: 50%;
     border: none;
     font-size: 24px;
     cursor: pointer;
@@ -291,8 +332,6 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
-    z-index: 1;
 }
 .floating-btn:hover {
     transform: scale(1.1);
@@ -327,10 +366,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 100%;
     
-    /* IMPORTANT: This keeps it above the fog! */
+    /* ALIGN TO TOP (instead of center) */
+    justify-content: flex-start; 
+    padding-top: 60px; /* Add space at the top so it doesn't hit the Back button */
+    
+    width: 100%;
+    height: 100%; /* Fill screen */
     position: relative; 
     z-index: 1; 
 }
