@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wordle</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#b0c4de">
+</head>
+    
+<body>
+    <!-- 1. THEME TOGGLE (Keep this visible always) -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add("dark-mode");
+        }
+    </script>
+    <button id="theme-toggle" class="floating-btn">🌙</button>
+
+    <!-- 2. HOME SCREEN (New!) -->
+    <div id="home-screen">
+        <h1 class="logo">boredle!</h1>
+        
+        <!-- NEW SUBTITLE -->
+        <p class="subtitle">a wordle clone made by akuji</p>
+        
+        <div class="menu-buttons">
+            <button id="start-btn" class="menu-btn primary">play game</button>
+            <button id="rules-btn" class="menu-btn secondary">how to play</button>
+        </div>
+
+    </div>
+
+    <!-- 3. GAME SCREEN (Hidden by default) -->
+    <div id="game-screen" class="hidden">
+        <button id="back-btn">⬅</button>
+        
+        <h1></h1>
+        
+        <div id="board">
+            <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div>
+            <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div>
+            <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div>
+            <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div>
+            <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div>
+            <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div> <div class="tile"></div>
+
+        </div>
+
+        <div id="keyboard-cont">
+             <!-- Paste your keyboard HTML here (q, w, e, r, t...) -->
+             <!-- Use the keyboard code from previous steps -->
+             <div class="first-row">
+                <button class="keyboard-button">q</button>
+                <button class="keyboard-button">w</button>
+                <button class="keyboard-button">e</button>
+                <button class="keyboard-button">r</button>
+                <button class="keyboard-button">t</button>
+                <button class="keyboard-button">y</button>
+                <button class="keyboard-button">u</button>
+                <button class="keyboard-button">i</button>
+                <button class="keyboard-button">o</button>
+                <button class="keyboard-button">p</button>
+            </div>
+            <div class="second-row">
+                <button class="keyboard-button">a</button>
+                <button class="keyboard-button">s</button>
+                <button class="keyboard-button">d</button>
+                <button class="keyboard-button">f</button>
+                <button class="keyboard-button">g</button>
+                <button class="keyboard-button">h</button>
+                <button class="keyboard-button">j</button>
+                <button class="keyboard-button">k</button>
+                <button class="keyboard-button">l</button>
+            </div>
+            <div class="third-row">
+                <button class="keyboard-button">Enter</button>
+                <button class="keyboard-button">z</button>
+                <button class="keyboard-button">x</button>
+                <button class="keyboard-button">c</button>
+                <button class="keyboard-button">v</button>
+                <button class="keyboard-button">b</button>
+                <button class="keyboard-button">n</button>
+                <button class="keyboard-button">m</button>
+                <button class="keyboard-button">Del</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. MODALS (Keep your existing modals here) -->
+    <div id="message-container"></div>
+    
+    <!-- Win/Lose Modal -->
+    <div id="game-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title">CONGRATULATIONS</h2>
+            <p>The correct word was:</p>
+            <div id="modal-word">COMFY</div>
+            <div class="modal-buttons">
+                <button id="play-again-btn">play again</button>
+                <button id="menu-btn">main menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- How To Play Modal (New) -->
+    <div id="rules-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-rules">&times;</span>
+            <h2>HOW TO PLAY</h2>
+            <p>Guess the <strong>WORD</strong> in 6 tries.</p>
+            <p>Each guess must be a valid 5-letter word.</p>
+            <p>The color of the tiles will change to show how close your guess was to the word.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+  
+</html>

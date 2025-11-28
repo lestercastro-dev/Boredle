@@ -1,0 +1,419 @@
+/* 1. DEFINE THE THEMES */
+:root {
+    /* --- LIGHT MODE (Blue Flower Theme) --- */
+    /* Based on the soft blue/white sketch */
+    --bg-color: #b0c4de;            /* Very pale blue-white background */
+   
+    
+    --grid-line: rgb(255, 255, 255);
+    /* Tiles */
+    --text-color: #5d6d8e;
+    --tile-bg: #e1eaf5;
+    --tile-border: #96abc4b7;
+    --tile-text: #3b4d70;
+    --key-bg: #d3deed;
+    --key-text: #3b4d70;
+    --fog-color: rgba(255, 255, 255, 0.6); 
+    /* Modal / Popups */
+    --modal-bg: #ffffff;
+    --modal-border: #8fa6c9;    /* Flower petal blue */
+    --modal-shadow: rgba(62, 85, 117, 0.15);
+    --btn-bg: #ffffff;
+    --btn-hover: #eef4fc;
+
+    /* Status Colors (Keep these readable but tinted) */
+    --correct-color: #7ab895;   /* Soft Green */
+    --present-color: #e3c466;   /* Soft Yellow */
+    --absent-color: #9cb0c9;    /* Blue-Gray for wrong letters */
+      /* Soft Blue-Gray, 20% opacity */
+}
+
+/* --- DARK MODE (Red Glasses Theme) --- */
+body.dark-mode {
+    /* Based on the black/red/beige character */
+    --bg-color: #1a1a1c;        /* Deep charcoal black */
+    --text-color: #f2e6d8;      /* Cream/Beige (like the skin/hair) */
+    
+    /* Tiles */
+    --tile-bg: #2b2b2e;         /* Dark gray tiles */
+    --tile-border: #c94c4c;     /* RED border (like the glasses!) */
+    --tile-text: #f2e6d8;       /* Cream text */
+    
+    /* Keyboard */
+    --key-bg: #3e3e42;          /* Dark gray keys */
+    --key-text: #f2e6d8;
+    
+    /* Modal / Popups */
+    --modal-bg: #1a1a1c;
+    --modal-border: #c94c4c;    /* Red border */
+    --modal-shadow: rgba(201, 76, 76, 0.2); /* Red glow shadow */
+    --btn-bg: #2b2b2e;
+    --btn-hover: #c94c4c;       /* Turn red on hover! */
+
+    /* Status Colors */
+    --correct-color: #6aaa64;   /* Standard Green */
+    --present-color: #c9b458;   /* Standard Yellow */
+    --absent-color: #3e3e42;    /* Dark Gray */
+    --grid-line: rgba(255, 255, 255, 0.05); /* White, 5% opacity */
+    --fog-color: rgba(0, 0, 0, 0.7); 
+}
+
+/* 2. MAIN STYLES (Using the Variables) */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+    
+    /* GRID PATTERN */
+    background-image: 
+        linear-gradient(var(--grid-line) 2px, transparent 2px),
+        linear-gradient(90deg, var(--grid-line) 2px, transparent 2px);
+    
+    /* FORCE BIG SQUARES */
+    background-size: 80px 80px !important;  
+    
+    transition: background-color 0.3s, color 0.3s;
+    background-attachment: fixed;
+    height: 100vh; /* Fill whole screen */
+}
+
+h1 {
+    letter-spacing: 2px;
+}
+
+/* --- 1. BOARD SIZING (Independent) --- */
+#board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px; /* Tighter gap */
+    margin-bottom: 25px;
+    margin-top: 15px;
+    
+    /* THE FIX: Force the container to hug the tiles */
+    width: fit-content; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tile {
+    /* Keep the Big Size */
+    width: 64px;        
+    height: 64px;
+    
+    background-color: var(--tile-bg);
+    border: 2px solid var(--tile-border);
+    color: var(--tile-text);
+    border-radius: 12px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-size: 32px; 
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.05); 
+    transition: all 0.6s ease;
+}
+
+/* --- 2. KEYBOARD SIZING (Independent) --- */
+#keyboard-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; 
+    width: 100%;
+}
+
+#keyboard-cont div {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    width: auto;
+}
+
+.keyboard-button {
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    border: none;
+    
+    /* MATCH TILE ROUNDNESS */
+    border-radius: 8px; 
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: var(--key-bg);
+    color: var(--key-text);
+    
+    /* SIZE INCREASE */
+    min-width: 52px;    /* Wider keys */
+    height: 62px;       /* Taller keys */
+    font-size: 20px;    /* Bigger text */
+    
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Deep shadow for 3D feel */
+    box-shadow: 0 4px 0 rgba(0,0,0,0.15); 
+}
+
+/* Enter and Del keys */
+.third-row .keyboard-button:first-child, 
+.third-row .keyboard-button:last-child { 
+    min-width: 85px !important; 
+    background-color: #f497aa; 
+    color: white;
+    font-size: 16px;
+}
+
+/* COLORS (Now using variables so they match the themes!) */
+.correct { 
+    background-color: var(--correct-color) !important; 
+    border-color: var(--correct-color) !important; 
+    color: white !important; 
+}
+
+.present { 
+    background-color: var(--present-color) !important; 
+    border-color: var(--present-color) !important; 
+    color: white !important; 
+}
+
+.absent { 
+    background-color: var(--absent-color) !important; 
+    border-color: var(--absent-color) !important; 
+    color: white !important; 
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.hidden {
+    display: none !important; /* The !important forces it to hide no matter what */
+    visibility: hidden;
+}
+
+.modal-content {
+    background-color: var(--modal-bg);       /* USE VARIABLE */
+    border: 3px solid var(--modal-border);   /* USE VARIABLE */
+    box-shadow: 0 10px 25px var(--modal-shadow);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+    width: 300px;
+    color: var(--text-color);
+}
+
+#modal-word {
+    background-color: var(--bg-color);
+    border: 2px solid var(--modal-border);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 15px auto;
+    width: fit-content;
+    color: var(--text-color);
+}
+
+.modal-buttons button {
+    background-color: var(--btn-bg);
+    border: 2px solid var(--modal-border);
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: var(--text-color);
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.modal-buttons button:hover {
+    background-color: var(--btn-hover);
+}
+
+.close-btn {
+    position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;
+}
+
+/* NOTIFICATIONS */
+#message-container {
+    position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; gap: 10px; z-index: 100;
+}
+.message {
+    background-color: var(--text-color); /* Invert text color for popup bg */
+    color: var(--bg-color);
+    padding: 10px 20px; border-radius: 5px; font-weight: bold;
+}
+.message.fade-out { opacity: 0; transition: opacity 0.5s ease; }
+
+/* FLOATING TOGGLE BUTTON */
+.floating-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Circle */
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    background-color: var(--key-bg);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+}
+.floating-btn:hover {
+    transform: scale(1.1);
+}
+
+/* --- HOME SCREEN STYLES --- */
+
+/* 1. The Graph Paper Background */
+body {
+    background-color: var(--bg-color);
+    /* Create a grid pattern using gradients */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    
+    background-size: 30px 30px; /* Slightly smaller grid squares */
+}
+
+/* 2. Layout for Home Screen */
+#home-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh; /* Take up most of the screen */
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+#game-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+    /* IMPORTANT: This keeps it above the fog! */
+    position: relative; 
+    z-index: 1; 
+}
+
+/* 3. The "boredle!" Logo */
+.logo {
+    font-size: 110px; /* Was 80px - NOW MASSIVE */
+    margin: 0;
+    color: var(--tile-bg);
+    -webkit-text-stroke: 4px var(--text-color); /* Thicker outline */
+    text-shadow: 6px 6px 0px var(--tile-border); /* Deeper shadow */
+    font-family: 'Nunito', sans-serif;
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 24px; /* Was 18px - Easier to read */
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 50px; /* More space before buttons */
+    color: var(--text-color);
+}
+
+/* 4. Menu Buttons */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menu-btn, .menu-btn.primary, .menu-btn.secondary {
+    font-family: 'Nunito', sans-serif;
+    
+    /* BIGGER TEXT */
+    font-size: 26px; /* Was 20px */
+    font-weight: bold;
+    
+    /* BIGGER BUTTON */
+    padding: 20px 0; /* Was 15px */
+    width: 300px;    /* Was 220px */
+    
+    border-radius: 50px; /* Rounder ends */
+    cursor: pointer;
+    border: 4px solid #5d6d8e; /* Thicker border */
+    
+    background-color: #e1eaf5 !important;
+    color: #3b4d70 !important;
+    
+    text-align: center;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+/* 5. Back Button (Game Screen) */
+#back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+/* --- THE FOG LAYER --- */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 200%; /* Wider than screen for movement */
+    height: 200%; /* Taller than screen */
+    
+    /* The Fog Texture: A diagonal drift of mist */
+    background-image: linear-gradient(
+        120deg, 
+        var(--fog-color) 0%, 
+        transparent 40%, 
+        transparent 60%, 
+        var(--fog-color) 100%
+    );
+    
+    /* Put it behind the buttons, but in front of the grid background */
+    z-index: 0; 
+    pointer-events: none; /* Let clicks pass through it */
+    
+    /* The Animation: Move it slowly */
+    animation: fogDrift 20s infinite linear;
+}
+
+@keyframes fogDrift {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-50px, -50px); } /* Move slightly */
+    100% { transform: translate(0, 0); } /* Go back */
+}
+
