@@ -1,3 +1,35 @@
+* {
+    font-family: 'Nunito', sans-serif !important;
+}
+
+/* 2. Fix the bottom white bar by coloring the root container */
+html {
+    background-color: var(--bg-color);
+    height: 100%;
+    overflow: hidden; /* Stop scrolling bounce */
+}
+
+body {
+    min-height: 100%;
+    /* Keep existing body styles below... */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+    background-image: 
+        linear-gradient(var(--grid-line) 2px, transparent 2px),
+        linear-gradient(90deg, var(--grid-line) 2px, transparent 2px);
+    background-size: 80px 80px !important; 
+    transition: background-color 0.3s, color 0.3s;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100%;
+    overscroll-behavior: none;
+}
+
 /* 1. DEFINE THE THEMES */
 :root {
     /* --- LIGHT MODE (Blue Flower Theme) --- */
@@ -26,6 +58,9 @@
     --present-color: #e3c466;   /* Soft Yellow */
     --absent-color: #9cb0c9;    /* Blue-Gray for wrong letters */
       /* Soft Blue-Gray, 20% opacity */
+    
+    --key-special-bg: #8fa6c9;  /* Soft Periwinkle */
+    --key-special-text: #ffffff;
 }
 
 /* --- DARK MODE (Red Glasses Theme) --- */
@@ -58,6 +93,9 @@ body.dark-mode {
     --present-color: #c9b458;   /* Standard Yellow */
     --absent-color: #3e3e42;    /* Dark Gray */
 
+    /* NEW SPECIAL KEY COLOR: Matches the Red Glasses theme */
+    --key-special-bg: #c94c4c; /* The Red Accent */
+    --key-special-text: #ffffff;
 
 }
 
@@ -68,40 +106,7 @@ button {
     font-family: 'Nunito', sans-serif !important;
 }
 
-/* FIX BOTTOM GAP COLORS */
-html {
-    background-color: var(--bg-color); /* Ensures full coverage */
-}
-html, body {
-    /* RESET DEFAULT BROWSER STYLES */
-    margin: 0 !important;   /* Kill the white border */
-    padding: 0 !important;  /* Kill any extra padding */
-    width: 100vw;           /* Force full viewport width */
-    height: 100vh;          /* Force full viewport height */
-    
-    /* Center Content */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Ensure vertical centering */
-    
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Nunito', sans-serif;
-    
-    /* GRID PATTERN */
-    background-image: 
-        linear-gradient(var(--grid-line) 2px, transparent 2px), 
-        linear-gradient(90deg, var(--grid-line) 2px, transparent 2px); 
-    background-size: 80px 80px !important; 
-    
-    transition: background-color 0.3s, color 0.3s;
-    background-attachment: fixed;
-    
-    /* DISABLE SCROLLING */
-    overflow: hidden;
-    overscroll-behavior: none;
-}
+
 
 h1 {
     letter-spacing: 2px;
@@ -184,13 +189,16 @@ h1 {
     box-shadow: 0 4px 0 rgba(0,0,0,0.15); 
 }
 
-/* Enter and Del keys */
+/* Special Keys (Enter & Del) */
 .third-row .keyboard-button:first-child, 
 .third-row .keyboard-button:last-child { 
+    /* Size Settings */
     min-width: 85px !important; 
-    background-color: #f497aa; 
-    color: white;
     font-size: 16px;
+    
+    /* COLOR SETTINGS (Using the new variables) */
+    background-color: var(--key-special-bg) !important; 
+    color: var(--key-special-text) !important;
 }
 
 /* COLORS (Now using variables so they match the themes!) */

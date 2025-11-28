@@ -28,10 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let row = 0;
     let col = 0;
     let isGameOver = false;
-    let secretWord = "APPLE"; 
+    let encodedSecret = "";
     
     // --- DICTIONARIES ---
-    // 1. GUARANTEED WORDS (Hardcoded so they ALWAYS work)
     const guaranteedWords = [
         "APPLE", "BEACH", "BRAIN", "BREAD", "BRUSH", "CHAIR", "CHEST", "CHORD", 
         "CLICK", "CLOCK", "CLOUD", "DANCE", "DIARY", "DRINK", "DRIVE", "EARTH", 
@@ -41,16 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
         "PLATE", "POWER", "RADIO", "RIVER", "ROBOT", "SHIRT", "SHOES", "SPACE", 
         "STORM", "TABLE", "TOAST", "TOUCH", "TRAIN", "TRUCK", "VOICE", "WATER", 
         "WATCH", "WOMAN", "WORLD", "WRITE", "YOUTH", "ZEBRA",
-        // The specific ones you asked for:
         "SWOLE", "FJORD", "CRANE", "SLATE", "AUDIO", "ADIEU"
     ];
 
-    let allValidWords = [...guaranteedWords]; // Start with these immediately
-    let secretCandidates = [...guaranteedWords]; // Start with these immediately
+    let allValidWords = [...guaranteedWords]; 
+    let secretCandidates = [...guaranteedWords]; 
     
     // --- 2. INITIALIZATION ---
 
-    // Load Theme
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add("dark-mode");
         if (themeBtn) themeBtn.textContent = "☀️";
@@ -60,18 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
     currentStreak = parseInt(localStorage.getItem('boredle-streak')) || 0;
     if (streakElement) streakElement.innerText = "🔥 " + currentStreak;
 
-    // Reset Screens
     if (gameScreen && homeScreen) {
         gameScreen.classList.add("hidden");
         homeScreen.classList.remove("hidden");
     }
 
-    // DOWNLOAD THE BIG LIST (Background)
     fetchDictionaries();
 
     async function fetchDictionaries() {
         try {
-            // We use a very reliable source (TabAtkins) which combines answers + guesses
             const response = await fetch("https://raw.githubusercontent.com/tabatkins/wordle-list/main/words");
             if (!response.ok) throw new Error("Network response was not ok");
             
@@ -80,20 +74,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 .map(w => w.toUpperCase().trim())
                 .filter(w => w.length === 5);
 
-            // MERGE BIG LIST WITH HARDCODED LIST
-            // This ensures we have the 12,000 online words PLUS your specific ones
             allValidWords = [...new Set([...guaranteedWords, ...bigList])];
-            
-            // For Secret Words, we prefer the "Common" ones (Top 2000 of the download)
-            // But we ensure your hardcoded ones are possibilities too.
             secretCandidates = [...guaranteedWords, ...bigList.slice(0, 2500)];
 
             console.log("Dictionary Updated. Total Words:", allValidWords.length);
 
         } catch (error) {
             console.warn("Using Offline Dictionary:", error);
-            // If download fails, we stick to 'guaranteedWords'. 
-            // YOUR GAME WILL STILL WORK for those 50+ words.
         }
     }
 
@@ -104,12 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
         col = 0;
         isGameOver = false;
         
-        // Pick Random Secret Word
+        let rawWord = "APPLE"; 
         if (secretCandidates.length > 0) {
-            secretWord = secretCandidates[Math.floor(Math.random() * secretCandidates.length)];
+            rawWord = secretCandidates[Math.floor(Math.random() * secretCandidates.length)];
         }
-        console.log("Secret:", secretWord);
-
+        encodedSecret = btoa(rawWord); 
+               
         // Reset Visuals
         tiles.forEach(tile => {
             tile.innerText = "";
@@ -167,18 +154,26 @@ document.addEventListener('DOMContentLoaded', () => {
             currentGuess += tiles[(row * 5) + i].innerText;
         }
 
-        // VALIDATION CHECK
         if (!allValidWords.includes(currentGuess)) {
             showMessage("Not in word list");
             shakeRow();
             return;
         }
 
-        revealColors(currentGuess);
-    }
+        // DECRYPT FOR COMPARISON
+        const realWord = atob(encodedSecret);
+
+        if (currentGuess === realWord) {
+            revealColors(currentGuess);
+        } else {
+            revealColors(currentGuess);
+        }
+    } // <-- THIS WAS MISSING!
 
     function revealColors(guess) {
-        let checkSecret = secretWord.split('');
+        const realWord = atob(encodedSecret);
+        
+        let checkSecret = realWord.split('');
         let checkGuess = guess.split('');
         let states = Array(5).fill('absent');
 
@@ -223,20 +218,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }, i * 200);
         }
 
-// WIN/LOSE CHECK
-        if (guess === secretWord) {
-            // 1. UPDATE STREAK (WIN)
-            if (!isGameOver) { // Ensure we only count once
+        // WIN/LOSE CHECK
+        if (guess === realWord) {
+            // WIN
+            if (!isGameOver) { 
                 currentStreak++;
                 localStorage.setItem('boredle-streak', currentStreak);
                 if (streakElement) streakElement.innerText = "🔥 " + currentStreak;
             }
-            
             setTimeout(() => showModal(true), 1500);
             isGameOver = true;
         } else {
             if (row === 5) {
-                // 2. RESET STREAK (LOSE)
+                // LOSE
                 currentStreak = 0;
                 localStorage.setItem('boredle-streak', 0);
                 if (streakElement) streakElement.innerText = "🔥 " + currentStreak;
@@ -281,7 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function showModal(win) {
         if (modal) {
             modal.classList.remove("hidden");
-            if (modalWord) modalWord.innerText = secretWord;
+            // DECRYPT THE WORD TO SHOW THE USER
+            if (modalWord) modalWord.innerText = atob(encodedSecret);
             if (modalTitle) modalTitle.innerText = win ? "CONGRATULATIONS" : "GAME OVER";
         }
     }
@@ -289,7 +284,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSystemTheme(isDark) {
         const metaThemeColor = document.querySelector("meta[name='theme-color']");
         if (metaThemeColor) {
+            // 1. Tell browser toolbar to change color
             metaThemeColor.setAttribute("content", isDark ? "#1a1a1c" : "#b0c4de");
+            
+            // 2. Force the background behind the page to change
+            document.documentElement.style.backgroundColor = isDark ? "#1a1a1c" : "#b0c4de";
         }
     }
 
@@ -299,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
         startBtn.addEventListener("click", () => {
             homeScreen.classList.add("hidden");
             gameScreen.classList.remove("hidden");
-            // Only start if we haven't started one yet
+            // Always start a new game if board is empty
             if (row === 0 && col === 0 && tiles[0].innerText === "") startGame();
         });
     }
